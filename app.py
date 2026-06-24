@@ -4,7 +4,13 @@ import plotly.express as px
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-
+st.markdown("""
+<style>
+[data-testid="stSidebar"] {
+    background-color: #0f172a;
+}
+</style>
+""", unsafe_allow_html=True)
 # Page Config
 st.set_page_config(
     page_title="AirPulse",
@@ -13,26 +19,48 @@ st.set_page_config(
 )
 
 # Sidebar
-st.sidebar.title("🌍 AirPulse")
-st.sidebar.info(
-    """
-    AI-powered Air Quality Monitoring Dashboard
+st.sidebar.markdown("""
+### 🌍 AirPulse
 
-    Features:
-    • AQI Prediction
-    • Air Quality Status
-    • Weekly AQI Forecast
-    • Interactive Dashboard
-    • India AQI Map
-    """
-)
+AI-powered Air Quality Monitoring Dashboard
+
+**Features**
+- AQI Prediction
+- Air Quality Status
+- Weekly AQI Forecast
+- Interactive Dashboard
+- India AQI Map
+- HCHO Hotspot Detection
+""")
+st.sidebar.markdown("---")
+
+st.sidebar.success("🟢 System Status: Online")
+
+st.sidebar.markdown("""
+### Features
+
+✅ AQI Prediction
+
+✅ India AQI Map
+
+✅ HCHO Hotspot Detection
+
+✅ Air Quality Alerts
+
+✅ Weekly Forecast
+""")
+
+st.sidebar.markdown("---")
+st.sidebar.caption("AirPulse v1.0")
 
 # Load Model
 model = joblib.load("models/aqi_model.pkl")
 
 # Title
 st.title("🌍 AirPulse AQI Predictor")
-st.caption("AI-powered Air Quality Prediction using XGBoost and Streamlit")
+st.caption(
+    "AI-Powered Air Quality Monitoring, Hotspot Detection, Geospatial Visualization and AQI Forecasting Dashboard"
+)
 
 # City Selection
 st.subheader("📍 Location Selection")
@@ -74,7 +102,8 @@ india_aqi = [
     
 ]
 
-st.write(f"📌 Coordinates: {city_coordinates[city]}")
+lat, lon = city_coordinates[city]
+st.info(f"📍 Latitude: {lat} | Longitude: {lon}")
 
 # India Map
 st.subheader("🗺️ India AQI Map")
@@ -93,7 +122,7 @@ hotspots = [
 ]
 hotspot_df = pd.DataFrame({
     "Hotspot": ["Delhi NCR", "Mumbai Industrial Belt", "Visakhapatnam", "Nellore"],
-    "Risk Level": ["Very High", "High", "High", "Very High"]
+    "Risk Level": ["Very High", "High", "High", "Moderate"]
 })
 
 st.dataframe(hotspot_df, use_container_width=True)
@@ -219,4 +248,7 @@ Sensitive groups should limit outdoor exposure.
 
 # Footer
 st.markdown("---")
-st.caption("AirPulse © 2026 | Developed by PANDI RAJIV")
+st.markdown(
+    "<center>🌍 AirPulse © 2026 | Developed by <b>Pandi Rajiv</b></center>",
+    unsafe_allow_html=True
+)
