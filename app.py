@@ -70,20 +70,37 @@ india_aqi = [
     ["Chennai", 13.0827, 80.2707, 120],
     ["Bangalore", 12.9716, 77.5946, 90],
     ["Hyderabad", 17.3850, 78.4867, 170],
-    ["Nellore", 14.4426, 79.9865, 110]
+    ["Nellore", 14.4426, 79.9865, 95]
     
 ]
 
 st.write(f"📌 Coordinates: {city_coordinates[city]}")
 
 # India Map
-st.subheader("🇮🇳 India AQI Map")
+st.subheader("🗺️ India AQI Map")
 
 india_map = folium.Map(
-    location=city_coordinates[city],
-    zoom_start=8
+    location=[22.9734, 78.6569],
+    zoom_start=5
 )
+st.subheader("🔥 HCHO Hotspot Detection")
 
+hotspots = [
+    ["Delhi NCR", "Very High"],
+    ["Mumbai Industrial Belt", "High"],
+    ["Visakhapatnam Industrial Zone", "High"],
+    ["Nellore Industrial Area", "Moderate"]
+]
+hotspot_df = pd.DataFrame({
+    "Hotspot": ["Delhi NCR", "Mumbai Industrial Belt", "Visakhapatnam", "Nellore"],
+    "Risk Level": ["Very High", "High", "High", "Very High"]
+})
+
+st.dataframe(hotspot_df, use_container_width=True)
+
+
+
+# AQI City Markers
 for city_name, lat, lon, aqi_value in india_aqi:
 
     if aqi_value <= 100:
@@ -100,6 +117,21 @@ for city_name, lat, lon, aqi_value in india_aqi:
         color=color,
         fill=True,
         fill_color=color
+    ).add_to(india_map)
+
+# HCHO Hotspot Markers
+hotspot_locations = [
+    ["Delhi NCR", 28.7041, 77.1025],
+    ["Mumbai Industrial Belt", 19.0760, 72.8777],
+    ["Visakhapatnam Industrial Zone", 17.6868, 83.2185],
+    ["Nellore Industrial Area", 14.4426, 79.9865]
+]
+
+for hotspot, lat, lon in hotspot_locations:
+    folium.Marker(
+        [lat, lon],
+        popup=f"🔥 HCHO Hotspot: {hotspot}",
+        icon=folium.Icon(color="red", icon="fire")
     ).add_to(india_map)
 
 st_folium(
