@@ -112,8 +112,18 @@ india_map = folium.Map(
     location=[22.9734, 78.6569],
     zoom_start=5
 )
-st.subheader("🔥 HCHO Hotspot Detection")
+st.markdown("""
+### AQI Legend
 
+🟢 Good (0–100)
+
+🟠 Moderate/Poor (101–200)
+
+🔴 Hazardous (>200)
+
+🔥 HCHO Hotspot
+""")
+st.subheader("🔥 National HCHO Hotspot Overview")
 hotspots = [
     ["Delhi NCR", "Very High"],
     ["Mumbai Industrial Belt", "High"],
@@ -245,10 +255,13 @@ Sensitive groups should limit outdoor exposure.
         fig,
         use_container_width=True
     )
+    st.caption(
+    "Note: This forecast is an illustrative AQI trend generated from the current prediction and is intended for demonstration purposes."
+)
 
 # Footer
 st.markdown("---")
 st.markdown(
-    "<center>🌍 AirPulse © 2026 | Developed by <b>Pandi Rajiv</b></center>",
+    "<center>🌍 AirPulse © 2026 | Developed by <b>PANDI RAJIV</b></center>",
     unsafe_allow_html=True
 )
